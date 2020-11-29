@@ -5,12 +5,12 @@ This repo contains simple explorations of autoencoders in different settings usi
 - [Denoising autoencoders](https://github.com/danieltsoukup/autoencoders/blob/master/denoising_autoencoders.ipynb)
 
 <img src="denoising_vector_field.png" 
-alt="IMAGE ALT TEXT HERE" width="600" height="600"/>
+alt="denoising vector field"/>
 
 - [Convolutional variational autoencoders for dimension reduction](https://github.com/danieltsoukup/autoencoders/blob/master/variational_autoencoders.ipynb)
 
 <img src="tsne_latent.png" 
-alt="IMAGE ALT TEXT HERE" width="600" height="600"/>
+alt="tsne clustering"/>
 
 - Semantic hashing on text (TODO)
 
