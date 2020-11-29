@@ -1,0 +1,2 @@
+model_checkpoint_path: "vae_16d_mnist.ckpt"
+all_model_checkpoint_paths: "vae_16d_mnist.ckpt"
