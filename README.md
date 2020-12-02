@@ -12,8 +12,10 @@ alt="denoising vector field"/>
 <img src="tsne_latent.png" 
 alt="tsne clustering"/>
 
-- Semantic text hashing with transformer-based autoencoders (TODO)
-
-- Semi-supervised learning with autoencoders for fraud detection (TODO)
+- Randomized Autoencoder Ensembles for Outlier Detection
 
 The notebooks contain some useful utility functions for tensorboard logging, constructing custom Keras models and training loops.
+
+Resources:
+
+- [Awesome anomaly detection resources](https://github.com/yzhao062/anomaly-detection-resources)
