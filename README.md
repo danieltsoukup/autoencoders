@@ -4,17 +4,17 @@ This repo contains simple explorations of autoencoders in different settings usi
 
 - [Denoising autoencoders](https://github.com/danieltsoukup/autoencoders/blob/master/denoising_autoencoders.ipynb)
 
-<img src="denoising_vector_field.png" 
+<img src="assets/denoising_vector_field.png" 
 alt="denoising vector field"/>
 
 - [Convolutional variational autoencoders for dimension reduction](https://github.com/danieltsoukup/autoencoders/blob/master/variational_autoencoders.ipynb)
 
-<img src="tsne_latent.png" 
+<img src="assets/tsne_latent.png" 
 alt="tsne clustering"/>
 
 - [Randomized Autoencoder Ensembles for Outlier Detection](https://github.com/danieltsoukup/autoencoders/blob/master/outlier_detection_with_autoencoders.ipynb)
 
-<img src="wordline_features.png" 
+<img src="assets/wordline_features.png" 
 alt="wordline features"/>
 
 The notebooks contain
