@@ -17,7 +17,11 @@ alt="tsne clustering"/>
 <img src="wordline_features.png" 
 alt="wordline features"/>
 
-The notebooks contain some useful utility functions for tensorboard logging, constructing custom Keras models and training loops.
+The notebooks contain
+- useful utility functions for tensorboard logging,
+- constructing custom Keras models such as with weight masking,
+- custom training loops for variational autoencoders,
+- custom data loaders that change the input per epoch for adaptive learning.
 
 Resources:
 
