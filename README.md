@@ -12,7 +12,7 @@ alt="denoising vector field"/>
 <img src="tsne_latent.png" 
 alt="tsne clustering"/>
 
-- Randomized Autoencoder Ensembles for Outlier Detection
+- [Randomized Autoencoder Ensembles for Outlier Detection](https://github.com/danieltsoukup/autoencoders/blob/master/outlier_detection_with_autoencoders.ipynb)
 
 The notebooks contain some useful utility functions for tensorboard logging, constructing custom Keras models and training loops.
 
