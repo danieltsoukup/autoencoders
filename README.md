@@ -14,6 +14,9 @@ alt="tsne clustering"/>
 
 - [Randomized Autoencoder Ensembles for Outlier Detection](https://github.com/danieltsoukup/autoencoders/blob/master/outlier_detection_with_autoencoders.ipynb)
 
+<img src="wordline_features.png" 
+alt="wordline features"/>
+
 The notebooks contain some useful utility functions for tensorboard logging, constructing custom Keras models and training loops.
 
 Resources:
