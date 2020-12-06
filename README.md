@@ -23,6 +23,11 @@ The notebooks contain
 - custom training loops for variational autoencoders,
 - custom data loaders that change the input per epoch for adaptive learning.
 
+More ideas to explore:
+- Sparse autoencoders
+- Semantic hashing for texts
+- Layer-wise pretraining of deep autoencoders
+
 Resources:
 
 - [Awesome anomaly detection resources](https://github.com/yzhao062/anomaly-detection-resources)
