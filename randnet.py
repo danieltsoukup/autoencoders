@@ -5,6 +5,11 @@ from tensorflow.keras import layers
 import pickle
 
 
+#######################################################################
+# Based on  Jinghui Chen, Saket Sathe, Charu Aggarwal, Deepak Turaga. #
+# Outlier Detection with Autoencoder Ensembles. SIAM SDM, 2017.       #
+#######################################################################
+
 class RandAE(tf.keras.Sequential):
     def __init__(self, input_dim, hidden_dims, drop_ratio=0.5, **kwargs):
         super(RandAE, self).__init__(**kwargs)

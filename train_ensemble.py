@@ -4,7 +4,7 @@ from typing import Tuple
 from tqdm import tqdm
 from datetime import datetime
 import pickle
-from sklearn.preprocessing import QuantileTransformer, MinMaxScaler
+from sklearn.preprocessing import QuantileTransformer, MinMaxScaler, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -12,6 +12,7 @@ from sklearn.metrics import (
     precision_recall_curve,
     cohen_kappa_score,
 )
+from tensorflow import keras
 from randnet import RandAE, BatchAdaptiveDataGenerator
 
 
@@ -57,22 +58,34 @@ def eval_ensemble(ensemble, input_data, input_labels, contamination):
 
     results = dict()
 
-    # make ensemble predictions
+    # make prediction by each ensemble component
     predictions = [model.predict(input_data) for model in ensemble]
 
+    # SSE based on reconstruction for each component
     reconstruction_loss = np.stack(
-        [np.square((pred - input_data)).mean(axis=1) for pred in predictions], axis=1
+        [np.square((pred - input_data)).sum(axis=1) for pred in predictions], axis=1
     )
+
+    results["reconstruction_loss"] = reconstruction_loss
+
+    # scale the std to account for different levels of overfitting
+    scaler = StandardScaler(with_mean=False)
+    reconstruction_loss = scaler.fit_transform(reconstruction_loss)
+
+    # find the median loss for each sample
     median_loss = np.median(reconstruction_loss, axis=1)
 
+    # calibrate the threshold by training contamination ratio
     threshold = np.quantile(median_loss, contamination)
+
+    # make hard predicition
     test_outliers = np.where(median_loss > threshold, 1, 0)
 
     results["classification_report"] = classification_report(
         input_labels, test_outliers
     )
 
-    # min-max scaling the reconstruction loss
+    # min-max scaling the reconstruction loss to calculate PR-curve
     min_ = median_loss.min()
     max_ = median_loss.max()
     scaled_loss = (median_loss - min_) / (max_ - min_)
@@ -86,19 +99,24 @@ def eval_ensemble(ensemble, input_data, input_labels, contamination):
     return results
 
 
+# CHANGE if other data used
 DATA_PATH = "data/creditcard.csv"
 TARGET_COL = "Class"
 INPUT_SHAPE = 30
 
-MODEL_PARAMS = {"input_dim": INPUT_SHAPE, "hidden_dims": [16, 8, 16], "drop_ratio": 0.2}
-
-COMPILE_PARAMS = {
-    "optimizer": "adam",
-    "loss": "mse",
-    "run_eagerly": True,
+MODEL_PARAMS = {
+    "input_dim": INPUT_SHAPE,
+    "hidden_dims": [16, 8, 16],  # could benefit from layer-wise pretraining
+    "drop_ratio": 0.2,
 }
 
-EPOCHS = 25
+COMPILE_PARAMS = {
+    "optimizer": keras.optimizers.RMSprop(learning_rate=0.005),  # why not adam?
+    "loss": "mse",  # can try binary cross entropy?
+    "run_eagerly": True,  # for the layer-masking to work
+}
+
+EPOCHS = 25  # needs to be increased if layer-wise pre-training
 
 DATA_GEN_PARAMS = {
     "start_batch_size": 128,
@@ -108,16 +126,16 @@ DATA_GEN_PARAMS = {
 
 FIT_PARAMS = {"epochs": EPOCHS, "verbose": 1}
 
-N_MODELS = 50
+N_MODELS = 25  # there was no significant gain from more components in the paper
 
-all_params = (
-    MODEL_PARAMS,
-    COMPILE_PARAMS,
-    EPOCHS,
-    DATA_GEN_PARAMS,
-    FIT_PARAMS,
-    N_MODELS,
-)
+all_params = {
+    "model_params": MODEL_PARAMS,
+    "compile_params": COMPILE_PARAMS,
+    "epochs": EPOCHS,
+    "data_gen_params": DATA_GEN_PARAMS,
+    "fit_params": FIT_PARAMS,
+    "n_models": N_MODELS,
+}
 
 if __name__ == "__main__":
     # load the data
@@ -141,13 +159,16 @@ if __name__ == "__main__":
         model.compile(**COMPILE_PARAMS)
 
         data_generator = BatchAdaptiveDataGenerator(X_train, **DATA_GEN_PARAMS)
-        model.fit(data_generator, **FIT_PARAMS)
+        history = model.fit(data_generator, **FIT_PARAMS)
 
         # save the weights and mask
-        model.save_weights(f"models/randae_model_{i}_{timestamp}")
+        model.save_weights(f"models/model_{i}_{timestamp}")
 
         with open(f"models/model_{i}_masks_{timestamp}.pickle", "wb") as handle:
             pickle.dump(model.layer_masks, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        with open(f"models/model_{i}_history_{timestamp}.pickle", "wb") as handle:
+            pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         ensemble.append(model)
 

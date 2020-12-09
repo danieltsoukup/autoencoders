@@ -17,7 +17,7 @@ alt="tsne clustering"/>
 <img src="assets/wordline_features.png" 
 alt="wordline features"/>
 
-The main experiment with the RandNet architecture [(see Chang et at)](https://paperswithcode.com/paper/randnet-deep-learning-with-compressed)  and 
+The main experiment with the RandNet architecture [(see Chen et at)](https://saketsathe.net/downloads/autoencode.pdf)  and 
 adaptive learning can be called by the `train_ensemble.py` script.
 The Wordline file needs to be downloaded by hand to a `data` folder (the script should run with other data sets if you change the path and input shape).
 
