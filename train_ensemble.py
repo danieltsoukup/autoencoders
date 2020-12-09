@@ -111,12 +111,12 @@ MODEL_PARAMS = {
 }
 
 COMPILE_PARAMS = {
-    "optimizer": keras.optimizers.RMSprop(learning_rate=0.005),  # why not adam?
+    "optimizer": keras.optimizers.RMSprop(learning_rate=0.001),  # why not adam?
     "loss": "mse",  # can try binary cross entropy?
     "run_eagerly": True,  # for the layer-masking to work
 }
 
-EPOCHS = 25  # needs to be increased if layer-wise pre-training
+EPOCHS = 50  # needs to be increased if layer-wise pre-training
 
 DATA_GEN_PARAMS = {
     "start_batch_size": 128,
@@ -168,7 +168,7 @@ if __name__ == "__main__":
             pickle.dump(model.layer_masks, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         with open(f"models/model_{i}_history_{timestamp}.pickle", "wb") as handle:
-            pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(history.history, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         ensemble.append(model)
 
