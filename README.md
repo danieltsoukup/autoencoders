@@ -17,6 +17,8 @@ alt="tsne clustering"/>
 <img src="assets/wordline_features.png" 
 alt="wordline features"/>
 
+The main experiment with the RandNet architecture and adaptive learning can be called by the `train_ensemble.py` script.
+
 The notebooks contain
 - useful utility functions for tensorboard logging,
 - constructing custom Keras models such as with weight masking,
