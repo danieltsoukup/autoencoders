@@ -33,6 +33,10 @@ More ideas to explore:
 - Semantic hashing for texts
 - Layer-wise pretraining of deep autoencoders
 
-Resources:
+Resources (more links in the notebooks):
 
+- [Keras AE tutorial](https://blog.keras.io/building-autoencoders-in-keras.html)
+- [Kereas generative VAE example](https://keras.io/examples/generative/vae/)
+- [Deeplearning book (by Goodfellow et al) on AEs](https://www.deeplearningbook.org/contents/autoencoders.html)
+- [Hands-on ML (by Geron) on AEs](https://github.com/ageron/handson-ml2/blob/master/17_autoencoders_and_gans.ipynb)
 - [Awesome anomaly detection resources](https://github.com/yzhao062/anomaly-detection-resources)
