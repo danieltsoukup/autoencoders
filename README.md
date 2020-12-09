@@ -17,7 +17,9 @@ alt="tsne clustering"/>
 <img src="assets/wordline_features.png" 
 alt="wordline features"/>
 
-The main experiment with the RandNet architecture and adaptive learning can be called by the `train_ensemble.py` script.
+The main experiment with the RandNet architecture and 
+adaptive learning can be called by the `train_ensemble.py` script.
+The Wordline file needs to be downloaded by hand to a `data` folder (the script should run with other data sets if you change the path and input shape).
 
 The notebooks contain
 - useful utility functions for tensorboard logging,
