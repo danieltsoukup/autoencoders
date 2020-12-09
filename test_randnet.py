@@ -20,3 +20,7 @@ class TestBatchAdaptiveDataGenerator(unittest.TestCase):
 
     def test_fit(self):
         self.model.fit_generator(generator=self.generator, epochs=10, workers=1)
+
+
+if __name__ == '__main__':
+    unittest.main()

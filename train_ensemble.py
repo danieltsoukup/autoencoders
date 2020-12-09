@@ -90,7 +90,7 @@ DATA_PATH = "data/creditcard.csv"
 TARGET_COL = "Class"
 INPUT_SHAPE = 30
 
-MODEL_PARAMS = {"input_dim": INPUT_SHAPE, "hidden_dims": [16, 8, 16], "drop_ratio": 0.33}
+MODEL_PARAMS = {"input_dim": INPUT_SHAPE, "hidden_dims": [16, 8, 16], "drop_ratio": 0.2}
 
 COMPILE_PARAMS = {
     "optimizer": "adam",
@@ -98,7 +98,7 @@ COMPILE_PARAMS = {
     "run_eagerly": True,
 }
 
-EPOCHS = 50
+EPOCHS = 25
 
 DATA_GEN_PARAMS = {
     "start_batch_size": 128,

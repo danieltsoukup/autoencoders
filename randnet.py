@@ -41,16 +41,29 @@ class RandAE(tf.keras.Sequential):
         self.add(output_layer)
         self.layer_masks[layer_name] = self.get_mask(output_layer)
 
-    def get_mask(self, layer) -> np.ndarray:
+    def get_mask(self, layer, mode="replacement") -> np.ndarray:
         """
         Build mask for a layer.
         """
 
         shape = layer.input_shape[1], layer.output_shape[1]
 
-        return np.random.choice(
-            [0.0, 1.0], size=shape, p=[self.drop_ratio, 1 - self.drop_ratio]
-        )
+        if mode == "by_ratio":
+            mask = np.random.choice(
+                [0.0, 1.0], size=shape, p=[self.drop_ratio, 1 - self.drop_ratio]
+            )
+        elif mode == "replacement":
+            mask = np.ones(shape=(shape[0] * shape[1],))
+            zero_idx = np.random.choice(mask.shape[0], size=mask.shape[0], replace=True)
+            zero_idx = np.unique(zero_idx)
+            mask[zero_idx] = 0
+            mask = mask.reshape(shape)
+        else:
+            raise NotImplementedError(
+                f"Mode {mode} not implemented, choose from 'replacement' (original implementation) or 'by_ratio'."
+            )
+
+        return mask
 
     def load_masks(self, mask_pickle_path) -> None:
         """
