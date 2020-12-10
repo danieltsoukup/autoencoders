@@ -33,7 +33,6 @@ def preprocess_data(data, target_col, test_size=0.2) -> Tuple:
 
     scaler = Pipeline(
         [
-            ("quantile_transform", QuantileTransformer(output_distribution="normal")),
             ("minmax", MinMaxScaler()),
         ]
     )
@@ -111,7 +110,7 @@ MODEL_PARAMS = {
 }
 
 COMPILE_PARAMS = {
-    "optimizer": keras.optimizers.RMSprop(learning_rate=0.001),  # why not adam?
+    "optimizer": "adam",
     "loss": "mse",  # can try binary cross entropy?
     "run_eagerly": True,  # for the layer-masking to work
 }
@@ -124,7 +123,7 @@ DATA_GEN_PARAMS = {
     "subsample": 0.3,
 }
 
-FIT_PARAMS = {"epochs": EPOCHS, "verbose": 1}
+FIT_PARAMS = {"epochs": EPOCHS, "verbose": 1, "workers": -1}
 
 N_MODELS = 25  # there was no significant gain from more components in the paper
 
