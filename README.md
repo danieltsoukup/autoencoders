@@ -1,10 +1,9 @@
 # Autoencoders
 
-This repo contains simple explorations of autoencoders in different settings using Tensorflow and Keras.
+This repo contains explorations of autoencoders in different settings using Tensorflow and Keras.
 
-The main experiment with the RandNet architecture [(see Chen et at)](https://saketsathe.net/downloads/autoencode.pdf)  and 
-adaptive learning can be called by the `train_ensemble.py` script.
-The Wordline file needs to be downloaded by hand to a `data` folder (the script should run with other data sets if you change the `DATA_PATH` and `INPUT_SHAPE` params).
+The main experiment with the RandNet architecture [(see Chen et at)](https://saketsathe.net/downloads/autoencode.pdf) for unsupervised anomaly detection. This can be called by the `train_ensemble.py` script.
+The [Wordline](https://www.kaggle.com/mlg-ulb/creditcardfraud) file needs to be downloaded by hand to a `data` folder (the script should run with other data sets if you change the `DATA_PATH` and `INPUT_SHAPE` params). The training parameters can be changed by modifying the appropriate capitalized variables.
 
 The notebooks contain
 - useful utility functions for tensorboard logging (both metrics and images),
@@ -40,3 +39,4 @@ Resources (more links in the notebooks):
 - [Deeplearning book (by Goodfellow et al) on AEs](https://www.deeplearningbook.org/contents/autoencoders.html)
 - [Hands-on ML (by Geron) on AEs](https://github.com/ageron/handson-ml2/blob/master/17_autoencoders_and_gans.ipynb)
 - [Awesome anomaly detection resources](https://github.com/yzhao062/anomaly-detection-resources)
+- [Wordline post](https://blog.worldline.tech/2018/09/26/anomaly-detection-for-predictive-monitoring.html)
