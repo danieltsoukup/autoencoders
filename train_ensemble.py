@@ -5,6 +5,7 @@ from tqdm import tqdm
 from datetime import datetime
 import pickle
 from sklearn.preprocessing import QuantileTransformer, MinMaxScaler, StandardScaler
+from sklearn.base import TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -14,6 +15,32 @@ from sklearn.metrics import (
 )
 from tensorflow import keras
 from randnet import RandAE, BatchAdaptiveDataGenerator
+
+
+class MyRobustScaler(TransformerMixin):
+    def __init__(self, low_q=0.1, high_q=0.9):
+        self.low_q = low_q
+        self.high_q = high_q
+
+        self.feature_low_bound = None
+        self.feature_high_bound = None
+
+    def fit(self, X):
+        """
+        Record per-feature quantiles.
+        """
+        self.feature_low_bound, self.feature_high_bound = np.quantile(X, [self.low_q, self.high_q], axis=0)
+
+        return self
+
+    def transform(self, X):
+        """
+        Limit the data between the quantiles.
+        """
+        X_transformed = np.where(X <= self.feature_low_bound, self.feature_low_bound, X)
+        X_transformed = np.where(X_transformed >= self.feature_high_bound, self.feature_high_bound, X_transformed)
+
+        return X_transformed
 
 
 def load_data(path: str) -> pd.DataFrame:
@@ -26,18 +53,24 @@ def load_data(path: str) -> pd.DataFrame:
     return data
 
 
-def preprocess_data(data, target_col, test_size=0.2) -> Tuple:
+def preprocess_data(data, target_col, drop_cols=None, test_size=0.2) -> Tuple:
     """
     Scale and train-test split the data.
     """
 
     scaler = Pipeline(
         [
+            ("own_robust", MyRobustScaler()),
             ("minmax", MinMaxScaler()),
         ]
     )
 
-    X = data.drop(target_col, axis=1).values
+    if drop_cols:
+        drop_cols += [target_col]
+    else:
+        drop_cols = [target_col]
+
+    X = data.drop(drop_cols, axis=1).values
     y = data[target_col].values
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -100,8 +133,9 @@ def eval_ensemble(ensemble, input_data, input_labels, contamination):
 
 # CHANGE if other data used
 DATA_PATH = "data/creditcard.csv"
+DROP_COLS = ["Time", "Amount"]
 TARGET_COL = "Class"
-INPUT_SHAPE = 30
+INPUT_SHAPE = 30 - len(DROP_COLS)
 
 MODEL_PARAMS = {
     "input_dim": INPUT_SHAPE,
@@ -143,7 +177,7 @@ if __name__ == "__main__":
 
     # scale and train-test split
     print("Processing the data...")
-    X_train, X_test, y_train, y_test = preprocess_data(data, TARGET_COL)
+    X_train, X_test, y_train, y_test = preprocess_data(data, TARGET_COL, drop_cols=DROP_COLS)
 
     # fit models and save results
     print("Fitting the models...")
