@@ -40,3 +40,4 @@ Resources (more links in the notebooks):
 - [Hands-on ML (by Geron) on AEs](https://github.com/ageron/handson-ml2/blob/master/17_autoencoders_and_gans.ipynb)
 - [Awesome anomaly detection resources](https://github.com/yzhao062/anomaly-detection-resources)
 - [Wordline post](https://blog.worldline.tech/2018/09/26/anomaly-detection-for-predictive-monitoring.html)
+- [PYOD outlier detection library](https://pyod.readthedocs.io/en/latest/index.html)

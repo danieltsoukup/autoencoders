@@ -60,7 +60,7 @@ def preprocess_data(data, target_col, drop_cols=None, test_size=0.2) -> Tuple:
 
     scaler = Pipeline(
         [
-            ("own_robust", MyRobustScaler()),
+          #  ("own_robust", MyRobustScaler()),
             ("minmax", MinMaxScaler()),
         ]
     )
@@ -95,8 +95,8 @@ def eval_ensemble(ensemble, input_data, input_labels, contamination):
 
     # SSE based on reconstruction for each component
     reconstruction_loss = np.stack(
-        [np.square((pred - input_data)).sum(axis=1) for pred in predictions], axis=1
-    )
+        [np.square(pred - input_data).sum(axis=1) for pred in predictions], axis=1
+    ) # could be better ways to aggregate other then sum...
 
     results["reconstruction_loss"] = reconstruction_loss
 
@@ -133,13 +133,13 @@ def eval_ensemble(ensemble, input_data, input_labels, contamination):
 
 # CHANGE if other data used
 DATA_PATH = "data/creditcard.csv"
-DROP_COLS = ["Time", "Amount"]
+DROP_COLS = [] #["Time", "Amount"]
 TARGET_COL = "Class"
 INPUT_SHAPE = 30 - len(DROP_COLS)
 
 MODEL_PARAMS = {
     "input_dim": INPUT_SHAPE,
-    "hidden_dims": [16, 8, 16],  # could benefit from layer-wise pretraining
+    "hidden_dims": [25, 12, 25],  # could benefit from layer-wise pretraining
     "drop_ratio": 0.2,
 }
 
@@ -152,9 +152,9 @@ COMPILE_PARAMS = {
 EPOCHS = 50  # needs to be increased if layer-wise pre-training
 
 DATA_GEN_PARAMS = {
-    "start_batch_size": 128,
+    "start_batch_size": 32,
     "epochs": EPOCHS,
-    "subsample": 0.3,
+    "subsample": 0.1,
 }
 
 FIT_PARAMS = {"epochs": EPOCHS, "verbose": 1, "workers": -1}
