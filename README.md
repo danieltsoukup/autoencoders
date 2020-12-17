@@ -2,14 +2,15 @@
 
 This repo contains explorations of autoencoders in different settings using Tensorflow and Keras.
 
-The main experiment with the RandNet architecture [(see Chen et at)](https://saketsathe.net/downloads/autoencode.pdf) for unsupervised anomaly detection. This can be called by the `train_ensemble.py` script.
-The [Wordline](https://www.kaggle.com/mlg-ulb/creditcardfraud) file needs to be downloaded by hand to a `data` folder (the script should run with other data sets if you change the `DATA_PATH` and `INPUT_SHAPE` params). The training parameters can be changed by modifying the appropriate capitalized variables.
+The main experiment focuses on the RandNet architecture [(see Chen et at)](https://saketsathe.net/downloads/autoencode.pdf) for unsupervised anomaly detection; the model training can be run by calling the `train_ensemble.py` script.
+The [Wordline](https://www.kaggle.com/mlg-ulb/creditcardfraud) file needs to be downloaded by hand to a `data` folder (the script should run ok with other data sets if you change the `DATA_PATH` and `INPUT_SHAPE` params). Other training parameters can be changed by modifying the appropriate capitalized variables.
 
 The notebooks contain
 - useful utility functions for tensorboard logging (both metrics and images),
-- constructing custom Keras models: weight masking and custom training loops for variational autoencoders,
-- custom data loaders that change the model input per epoch for adaptive sampling. 
-We experiment with a batch-adaptive method that increases the batch size over the epochs. This
+- constructing custom Keras models with weight masking and custom training steps (e.g., variational autoencoders),
+- custom data loaders that change the model input per epoch for adaptive sampling.
+
+We experiment with a **batch-adaptive sampling method** that increases the batch size over the epochs. This
 results in covering more of the training data as we progress in learning.
 
 - [Denoising autoencoders](https://github.com/danieltsoukup/autoencoders/blob/master/denoising_autoencoders.ipynb)
